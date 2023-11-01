@@ -9,7 +9,7 @@ sudo apt install openvpn easy-rsa -y
 ```
 ## Passo 2: Configuração do Easy-RSA
 ```
-mkdir ~/openvpn-ca
+make-cadir ~/openvpn-ca
 cd ~/openvpn-ca
 ```
 ### 2.1 Edite o arquivo "vars":
