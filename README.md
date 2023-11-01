@@ -325,7 +325,7 @@ verb 3
 ## Passo 1: Crie um arquivo .txt
 
 ```
-echo "Este eh um arquivo secreto apenas para usuarios VPN, se voce esta conseguindo ver, sinta-se especial, Jesus te ama <3." > /home/ubuntu/secreto.txt
+echo "Este eh um arquivo secreto apenas para usuarios VPN, se voce esta conseguindo ver, sinta-se especial filhinho de vó <3." > /home/ubuntu/secreto.txt
 ```
 
 ## Passo 2: Navegue até onde o arquivo "secreto.txt" está localizado:
