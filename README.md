@@ -1,6 +1,6 @@
 # VPN COM SERVIDOR AWS E BITVISE SSH CLIENT
 Este repositório contém o passo a passo para configurar uma conexão VPN utilizando um servidor AWS e Bitvise SSH CLIENT.
-Aqui estou assumindo que você já tem uma servidor configurado na AWS e está acessando-o utilizando um IP Elástico, que é extremamente importante para que seu IP continue estático de modo que não gere problemas quando for necessária a conexão com a VPN.
+Aqui estou assumindo que você já tem uma servidor configurado na AWS e está acessando-o utilizando um IP Elástico, que é extremamente importante para que seu IP continue estático de modo que não gere problemas quando for necessária a conexão com a VPN e que esteja criada nas regras de entrada da sua intância a porta 1194 ou a porta que deseja trabalhar.
 
 ## Passo 1: Atualizar os pacotes e instalar o OpenVPN e Easy-RSA
 ```
@@ -9,7 +9,7 @@ sudo apt install openvpn easy-rsa -y
 ```
 ## Passo 2: Configuração do Easy-RSA
 ```
-make-cadir ~/openvpn-ca
+mkdir ~/openvpn-ca
 cd ~/openvpn-ca
 ```
 ### 2.1 Edite o arquivo "vars":
@@ -61,6 +61,7 @@ sudo cp ~/openvpn-ca/pki/ca.crt /etc/openvpn/
 sudo cp ~/openvpn-ca/pki/dh.pem /etc/openvpn/
 sudo cp ~/openvpn-ca/pki/issued/server.crt /etc/openvpn/
 sudo cp ~/openvpn-ca/pki/private/server.key /etc/openvpn/
+
 ```
 > Agora temos o certificado e a chave privada do servidor, juntamente com os parâmetros Diffie-Hellman e o certificado CA, no diretório de configuração do OpenVPN.
 
@@ -141,10 +142,35 @@ persist-tun
 ;local (seu_endereço_IP_aqui)
 
 # Optional: Uncomment to redirect all the client's traffic through the VPN.
-;push "redirect-gateway def1 bypass-dhcp"
+push "redirect-gateway def1 bypass-dhcp"
 
 ```
-   
+
+  O erro "failed to find GID for group nobody" indica que o OpenVPN não conseguiu encontrar o GID (Group ID) para o grupo "nobody", que é geralmente usado para execução de processos com privilégios reduzidos por razões de segurança. Para resolver esse problema, siga os passos abaixo:
+
+Passo 1: Verifique se o grupo "nobody" existe no sistema:
+
+
+```
+getent group nobody
+```
+Se o grupo "nobody" não existir, você precisará criá-lo. No Ubuntu, você pode usar o comando groupadd para criar o grupo:
+
+```
+sudo groupadd nobody
+```
+Passo 2: Verifique se o OpenVPN está configurado para usar o grupo "nobody" no arquivo de configuração do servidor OpenVPN, que geralmente é encontrado em /etc/openvpn/server.conf. Certifique-se de que a diretiva group esteja configurada como:
+
+
+```
+group nobody
+```
+Passo 3: Depois de fazer essas verificações e configurações, reinicie o serviço OpenVPN para aplicar as alterações:
+
+```
+sudo systemctl restart openvpn@server
+```
+Após executar esses comandos, o OpenVPN deve iniciar corretamente e usar o grupo "nobody" para executar os processos com privilégios reduzidos. Certifique-se de que o grupo "nobody" seja usado de forma apropriada em sua configuração para garantir a segurança e o funcionamento adequado do serviço VPN.
 
 # Passo 5: Inicie e habilite o serviço OpenVPN.
 
@@ -187,7 +213,7 @@ cd ~/openvpn-ca
  - Chave privada do cliente (meucliente.key)
  - Certificado da CA (ca.crt)
  - Chave de autenticação TLS (ta.key)
- - 
+   
 ## 2.2 Os mesmos podem ser encontrados nos seguintes locais:
 
 - ~/openvpn-ca/pki/private/meucliente.key
@@ -204,6 +230,7 @@ cd ~/openvpn-ca
 sudo cp ~/openvpn-ca/pki/ca.crt /tmp/
 sudo cp ~/openvpn-ca/pki/issued/meucliente.crt /tmp/
 sudo cp ~/openvpn-ca/pki/private/meucliente.key /tmp/
+sudo cp /etc/openvpn/ta.key ~/openvpn-ca/
 sudo cp ~/openvpn-ca/ta.key /tmp/
 ```
 > Após a execução desses comandos, os arquivos necessários estarão na pasta /tmp.
