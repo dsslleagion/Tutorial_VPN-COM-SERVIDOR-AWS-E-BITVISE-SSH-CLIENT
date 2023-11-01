@@ -148,7 +148,7 @@ push "redirect-gateway def1 bypass-dhcp"
 
   O erro "failed to find GID for group nobody" indica que o OpenVPN não conseguiu encontrar o GID (Group ID) para o grupo "nobody", que é geralmente usado para execução de processos com privilégios reduzidos por razões de segurança. Para resolver esse problema, siga os passos abaixo:
 
-Passo 1: Verifique se o grupo "nobody" existe no sistema:
+Passo 4.2: Verifique se o grupo "nobody" existe no sistema:
 
 
 ```
