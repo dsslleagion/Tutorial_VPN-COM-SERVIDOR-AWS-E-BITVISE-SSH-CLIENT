@@ -53,9 +53,14 @@ set_var EASYRSA_REQ_OU "My Organizational Unit"
 ./easyrsa build-server-full server nopass
 
 ```
+## 3.3 Gere a chave para o servidor:
+```
+sudo openvpn --genkey --secret /etc/openvpn/ta.key
+
+```
 > Neste comando, "server" é apenas um nome que estou usando para identificar o certificado do servidor. Você não será solicitado a entrar com uma senha devido ao argumento nopass.
 
-## 3.3 Mova os arquivos relevantes para o diretório de configuração do OpenVPN:
+## 3.4 Mova os arquivos relevantes para o diretório de configuração do OpenVPN:
 ```
 sudo cp ~/openvpn-ca/pki/ca.crt /etc/openvpn/
 sudo cp ~/openvpn-ca/pki/dh.pem /etc/openvpn/
