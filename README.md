@@ -56,6 +56,7 @@ set_var EASYRSA_REQ_OU "My Organizational Unit"
 ## 3.3 Gere a chave para o servidor:
 ```
 sudo openvpn --genkey --secret /etc/openvpn/ta.key
+sudo cp /etc/openvpn/ta.key ~/openvpn-ca/
 
 ```
 > Neste comando, "server" é apenas um nome que estou usando para identificar o certificado do servidor. Você não será solicitado a entrar com uma senha devido ao argumento nopass.
