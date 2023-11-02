@@ -70,7 +70,7 @@ sudo cp ~/openvpn-ca/pki/private/server.key /etc/openvpn/
 ## 4.1 Copie o arquivo de configuração para a pasta openvpn e edite-o:
 ```
 sudo cp /usr/share/doc/openvpn/examples/sample-config-files/server.conf /etc/openvpn/
-sudo vim /etc/openvpn/server.conf
+sudo nano /etc/openvpn/server.conf
 ```
 - Dentro do editor VIM, faça as seguintes modificações:
   
